@@ -141,3 +141,34 @@ GROUP BY
 HAVING
     cnt = 0
 ```
+
+#Create new admin user
+
+```
+INSERT INTO admin_user SELECT
+	NULL `user_id`,
+	"mohamed" `firstname`,
+	"hasan" `lastname`,
+	"admin@mydomain.com" `email`,
+	"mohamed" `username`,
+	"e99a18c428cb38d5f260853678922e03" `password`,
+	NOW() `created`,
+	NULL `modified`,
+	NULL `logdate`,
+	0 `lognum`,
+	0 `reload_acl_flag`,
+	1 `is_active`,
+	NULL `extra`,
+	NULL `rp_token`,
+	NOW() `rp_token_created_at`
+;
+
+INSERT INTO admin_role SELECT
+	NULL `role_id`,
+	(SELECT `role_id` FROM admin_role WHERE `role_name` = 'Administrators') `parent_id`,
+	2 `tree_level`,
+	0 `sort_order`,
+	'U' `role_type`,
+	(SELECT `user_id` FROM admin_user WHERE `username` = 'mohamed') `user_id`,
+	'mohamed' `role_name`;
+```
